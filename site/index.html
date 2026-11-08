@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nijatva Video Player — download</title>
+<meta name="description" content="Nijatva Video Player — a simple, fast video player for Windows, macOS, Linux, Android and the browser." />
+<style>
+  :root{
+    --emerald:#10B981; --emerald-d:#0E9F6E; --azure:#3B82F6; --cyan:#22D3EE;
+    --bg:#0E0F12; --surface:#16181D; --surface2:#1D2027; --line:#262A32;
+    --text:#F3F4F6; --muted:#9CA3AF;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(900px 420px at 12% -8%, rgba(16,185,129,.20), transparent 62%),
+      radial-gradient(820px 420px at 88% -6%, rgba(59,130,246,.20), transparent 62%),
+      var(--bg);
+    color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+  header{padding:64px 0 8px;text-align:center}
+  .logo{
+    width:74px;height:74px;border-radius:20px;margin:0 auto 18px;
+    background:linear-gradient(135deg,var(--emerald),var(--azure));
+    display:grid;place-items:center;
+    box-shadow:0 10px 30px rgba(16,185,129,.28);
+  }
+  .logo::after{
+    content:"";width:0;height:0;
+    border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent;
+    margin-left:5px;
+  }
+  h1{font-size:clamp(28px,5vw,44px);margin:0 0 8px;letter-spacing:-.02em}
+  .tag{color:var(--muted);font-size:clamp(15px,2.2vw,18px);margin:0 auto;max-width:620px}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:30px 0 10px}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:13px 22px;border-radius:12px;text-decoration:none;font-weight:600;font-size:15px;
+    border:1px solid var(--line);background:var(--surface);color:var(--text);
+    transition:.15s ease;
+  }
+  .btn:hover{transform:translateY(-2px);border-color:var(--emerald)}
+  .btn.primary{
+    background:linear-gradient(135deg,var(--emerald),var(--emerald-d));
+    color:#00281b;border-color:transparent;
+    box-shadow:0 8px 24px rgba(16,185,129,.28);
+  }
+  .btn .os{font-size:12px;opacity:.75;font-weight:500}
+  section{padding:34px 0}
+  h2{font-size:20px;margin:0 0 16px;letter-spacing:-.01em}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+  }
+  .card h3{margin:0 0 6px;font-size:15px}
+  .card p{margin:0;color:var(--muted);font-size:14px}
+  .dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .dl a{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    background:var(--surface2);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-decoration:none;color:var(--text);
+  }
+  .dl a:hover{border-color:var(--azure)}
+  .dl small{color:var(--muted);font-size:12px;display:block;font-weight:400}
+  .note{
+    margin-top:14px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.28);
+    border-radius:12px;padding:12px 16px;color:#cfe0ff;font-size:14px;
+  }
+  footer{border-top:1px solid var(--line);margin-top:20px;padding:22px 0 40px;
+         color:var(--muted);font-size:13px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+  footer a{color:var(--muted)}
+  footer a:hover{color:var(--emerald)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo"></div>
+    <h1>Nijatva Video Player</h1>
+    <p class="tag">Ek simple, fast video player — Windows, macOS, Linux, Android aur browser ke liye.
+       Ek hi codebase se bana, green–blue theme ke saath.</p>
+
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/vasudev-work/nijatva-video-player-multiplatform/releases/download/v1.0.0/nijatva-video-player-windows.msi">
+        Download for Windows <span class="os">.msi · 62 MB</span>
+      </a>
+      <a class="btn" href="player/">Browser me chalao</a>
+    </div>
+  </header>
+
+  <section>
+    <h2>Saare platforms</h2>
+    <div class="dl">
+      <a href="https://github.com/vasudev-work/nijatva-video-player-multiplatform/releases/download/v1.0.0/nijatva-video-player-windows.msi">
+        <span>Windows<small>.msi installer</small></span><span>↓</span>
+      </a>
+      <a href="https://github.com/vasudev-work/nijatva-video-player-multiplatform/releases/download/v1.0.0/nijatva-video-player-android.apk">
+        <span>Android<small>.apk · 12 MB</small></span><span>↓</span>
+      </a>
+      <a href="https://github.com/vasudev-work/nijatva-video-player-multiplatform/releases/download/v1.0.0/nijatva-video-player-macos.dmg">
+        <span>macOS<small>.dmg · 72 MB</small></span><span>↓</span>
+      </a>
+      <a href="https://github.com/vasudev-work/nijatva-video-player-multiplatform/releases/download/v1.0.0/nijatva-video-player-linux.deb">
+        <span>Linux<small>.deb · 58 MB</small></span><span>↓</span>
+      </a>
+    </div>
+    <div class="note">
+      <strong>Desktop ke liye VLC install hona chahiye</strong> — desktop build libVLC use karta hai.
+      Windows par installer unsigned hai, to "More info → Run anyway" karna pad sakta hai.
+      iOS abhi nahi hai (Apple signing certificate chahiye).
+    </div>
+  </section>
+
+  <section>
+    <h2>Features</h2>
+    <div class="grid">
+      <div class="card"><h3>Folder library</h3><p>Videos folder-wise, real thumbnails aur duration ke saath.</p></div>
+      <div class="card"><h3>Gestures</h3><p>Left swipe brightness, right swipe volume, horizontal seek, pinch zoom.</p></div>
+      <div class="card"><h3>Background &amp; PiP</h3><p>Screen off hone par bhi chalta hai; picture-in-picture bhi.</p></div>
+      <div class="card"><h3>Subtitles &amp; audio</h3><p>Track switching, subtitle size, sidecar .srt auto-load.</p></div>
+      <div class="card"><h3>Playlists, vault, app lock</h3><p>Playlists banao, private videos vault me rakho, PIN se lock karo.</p></div>
+      <div class="card"><h3>Network &amp; YouTube</h3><p>Stream URL, ad/tracker blocking, downloads, YouTube links in-app.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <a href="https://github.com/vasudev-work/nijatva-video-player-multiplatform">GitHub</a>
+    <a href="https://github.com/vasudev-work/nijatva-video-player-multiplatform/releases">Releases</a>
+    <span>Apache-2.0 · © 2026 Vasudev Dangaya</span>
+  </footer>
+
+</div>
+</body>
+</html>
