@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Nijatva Video Player</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="app">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon" id="btn-back" hidden aria-label="Back">‹</button>
+      <h1 id="screen-title">Home</h1>
+    </div>
+    <div class="topbar-right">
+      <button class="icon" id="btn-search" aria-label="Search">🔍</button>
+      <button class="icon" id="btn-view" aria-label="Toggle grid">▦</button>
+      <button class="icon" id="btn-sort" aria-label="Sort">⇅</button>
+    </div>
+  </header>
+
+  <div id="searchbar" class="searchbar" hidden>
+    <input id="search-input" type="search" placeholder="Search videos…" />
+  </div>
+
+  <main id="content" tabindex="-1"></main>
+
+  <nav class="bottom-nav" id="bottom-nav">
+    <button data-view="home"><span>⌂</span>Home</button>
+    <button data-view="library"><span>▤</span>Library</button>
+    <button data-view="folders"><span>🗀</span>Folders</button>
+    <button data-view="playlists"><span>≡</span>Playlists</button>
+    <button data-view="settings"><span>⚙</span>Settings</button>
+  </nav>
+</div>
+
+<!-- full-screen player -->
+<div id="player" class="player" hidden>
+  <video id="video" playsinline></video>
+
+  <div class="p-overlay" id="p-overlay">
+    <div class="p-top">
+      <button class="icon light" id="p-back" aria-label="Back">‹</button>
+      <div class="p-title" id="p-title">Video</div>
+      <button class="icon light" id="p-cc" aria-label="Subtitles">CC</button>
+      <button class="icon light" id="p-audio" aria-label="Audio track">🎧</button>
+      <button class="icon light" id="p-more" aria-label="More">⋮</button>
+    </div>
+
+    <div class="p-center">
+      <button class="icon light big" id="p-rew" aria-label="Back 10s">⟲10</button>
+      <button class="icon light huge" id="p-play" aria-label="Play/Pause">▶</button>
+      <button class="icon light big" id="p-fwd" aria-label="Forward 10s">10⟳</button>
+    </div>
+
+    <div class="p-bottom">
+      <div class="p-times"><span id="p-cur">00:00</span><span id="p-dur">00:00</span></div>
+      <input type="range" id="p-seek" min="0" max="1000" value="0" step="1" />
+      <div class="p-row">
+        <button class="icon light" id="p-lock" aria-label="Lock">🔒</button>
+        <button class="icon light" id="p-rotate" aria-label="Rotate">⟳</button>
+        <button class="chip" id="p-speed">1.0x</button>
+        <button class="icon light" id="p-aspect" aria-label="Aspect">⬚</button>
+        <button class="icon light" id="p-pip" aria-label="Picture in picture">⧉</button>
+        <button class="icon light" id="p-full" aria-label="Fullscreen">⛶</button>
+        <button class="icon light" id="p-close" aria-label="Close">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-hud" id="p-hud" hidden></div>
+  <div class="p-menu" id="p-menu" hidden>
+    <button data-act="repeat">Repeat: off</button>
+    <button data-act="shuffle">Shuffle: off</button>
+    <button data-act="speed">Playback speed</button>
+    <button data-act="close">Close player</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
