@@ -15,6 +15,7 @@
       <h1 id="screen-title">Home</h1>
     </div>
     <div class="topbar-right">
+      <button class="icon" id="btn-url" aria-label="Open URL">🔗</button>
       <button class="icon" id="btn-search" aria-label="Search">🔍</button>
       <button class="icon" id="btn-view" aria-label="Toggle grid">▦</button>
       <button class="icon" id="btn-sort" aria-label="Sort">⇅</button>
@@ -39,6 +40,9 @@
 <!-- full-screen player -->
 <div id="player" class="player" hidden>
   <video id="video" playsinline></video>
+  <div class="p-yt" id="p-yt" hidden>
+    <iframe id="p-yt-frame" title="YouTube" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen frameborder="0"></iframe>
+  </div>
 
   <div class="p-overlay" id="p-overlay">
     <div class="p-top">

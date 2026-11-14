@@ -205,6 +205,82 @@ function folders() {
 function historyFor(id) { return history.find(h => h.id === id); }
 
 
+
+/* ---------------- YouTube / URL ---------------- */
+const YT_RE = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/;
+const ytId = (url) => { const m = String(url || '').match(YT_RE); return m ? m[1] : null; };
+
+function openUrlSheet() {
+  const sheet = document.createElement('div');
+  sheet.className = 'sheet';
+  sheet.innerHTML = '<h3>Open URL</h3>';
+  const wrap = document.createElement('div');
+  wrap.style.padding = '0 18px 12px';
+  const input = document.createElement('input');
+  input.type = 'url';
+  input.placeholder = 'YouTube link ya video URL';
+  input.style.cssText = 'width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);color:var(--text);font-size:14px;outline:none';
+  wrap.appendChild(input);
+  sheet.appendChild(wrap);
+
+  const goBtn = document.createElement('button');
+  goBtn.textContent = 'Open';
+  goBtn.onclick = () => {
+    const url = input.value.trim();
+    if (!url) return;
+    sheet.remove();
+    openFromUrl(url);
+  };
+  sheet.appendChild(goBtn);
+
+  const scrim = document.createElement('div');
+  scrim.className = 'scrim'; scrim.onclick = () => sheet.remove();
+  sheet.appendChild(scrim);
+  document.body.appendChild(sheet);
+  setTimeout(() => input.focus(), 60);
+}
+
+function openFromUrl(url) {
+  const id = ytId(url);
+  if (id) {
+    const item = { id: uid(), name: 'YouTube · ' + id, path: url, folder: 'Network', yt: id };
+    library.unshift(item);
+    playYouTube(item);
+    return;
+  }
+  if (!/^https?:/i.test(url)) { toast('Invalid URL'); return; }
+  const name = decodeURIComponent((url.split('/').pop() || 'Stream').split('?')[0]) || 'Stream';
+  const item = { id: uid(), name, path: url, folder: 'Network', url, remote: true };
+  library.unshift(item);
+  play(item, [item]);
+}
+
+function resetPlayerModes() {
+  const box = document.getElementById('p-yt');
+  const frame = document.getElementById('p-yt-frame');
+  if (box) box.hidden = true;
+  if (frame) frame.src = 'about:blank';
+  video.hidden = false;
+  document.body.classList.remove('yt-mode');
+}
+
+function playYouTube(v) {
+  resetPlayerModes();
+  queue = [v]; queueIndex = 0;
+  video.pause();
+  video.removeAttribute('src');
+  video.hidden = true;
+  document.body.classList.add('yt-mode');
+  const box = document.getElementById('p-yt');
+  const frame = document.getElementById('p-yt-frame');
+  frame.src = 'https://www.youtube.com/embed/' + v.yt + '?autoplay=1&playsinline=1&rel=0';
+  box.hidden = false;
+  document.getElementById('p-title').textContent = v.name;
+  document.getElementById('player').hidden = false;
+  document.body.style.overflow = 'hidden';
+  showOverlay();
+}
+
 /* ---------------- add to playlist ---------------- */
 function addToPlaylistSheet(v) {
   const sheet = document.createElement('div');
@@ -279,7 +355,7 @@ function videoCard(v, opts = {}) {
     </div>`;
   el.onclick = () => play(v, opts.queue || filtered());
   wireLongPress(el, v);
-  requestThumb(v, $('[data-thumb]', el));
+  if (!v.yt) requestThumb(v, $('[data-thumb]', el));
   return el;
 }
 
@@ -294,7 +370,7 @@ function videoRow(v, opts = {}) {
     </div>`;
   el.onclick = () => play(v, opts.queue || filtered());
   wireLongPress(el, v);
-  requestThumb(v, $('[data-thumb]', el));
+  if (!v.yt) requestThumb(v, $('[data-thumb]', el));
   return el;
 }
 
@@ -543,6 +619,8 @@ const ASPECTS = ['fit', 'zoom', 'stretch'];
 let lastTap = 0;
 
 function play(v, list) {
+  if (v && v.yt) { playYouTube(v); return; }
+  resetPlayerModes();
   queue = list && list.length ? list : [v];
   queueIndex = queue.findIndex(x => x.id === v.id);
   if (queueIndex < 0) { queue = [v]; queueIndex = 0; }
@@ -566,6 +644,7 @@ function loadCurrent() {
 
 function closePlayer() {
   video.pause();
+  resetPlayerModes();
   $('#player').hidden = true;
   document.body.style.overflow = '';
   overlay.classList.remove('hidden');
@@ -772,6 +851,7 @@ $('#btn-sort').onclick = () => {
   toast('Sort: ' + settings.sortBy + (settings.sortAsc ? ' ↑' : ' ↓'));
   render();
 };
+$('#btn-url').onclick = openUrlSheet;
 $('#btn-search').onclick = () => {
   const bar = $('#searchbar');
   bar.hidden = !bar.hidden;
