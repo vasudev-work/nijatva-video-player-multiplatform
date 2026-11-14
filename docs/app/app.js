@@ -530,10 +530,19 @@ function emptyState(msg) {
   d.className = 'empty';
   d.innerHTML = `<h3>${esc(msg || 'Abhi koi video nahi')}</h3>
     <p>Apne device se video folder kholo — browser permission maangega, files kahin upload nahi hoti.</p>`;
+  const actions = document.createElement('div');
+  actions.className = 'empty-actions';
+
   const b = document.createElement('button');
   b.className = 'btn'; b.textContent = '📂 Open folder';
   b.onclick = openFolder;
-  d.appendChild(b);
+
+  const b2 = document.createElement('button');
+  b2.className = 'btn ghost'; b2.textContent = '🔗 Open link / YouTube';
+  b2.onclick = openUrlSheet;
+
+  actions.appendChild(b); actions.appendChild(b2);
+  d.appendChild(actions);
   return d;
 }
 
@@ -859,6 +868,16 @@ $('#btn-search').onclick = () => {
   else { query = ''; render(); }
 };
 $('#search-input').addEventListener('input', (e) => { query = e.target.value; render(); });
+$('#search-input').addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  const v = e.target.value.trim();
+  if (/^https?:\/\//i.test(v) || /youtu\.?be/i.test(v)) {
+    e.preventDefault();
+    openFromUrl(v);
+    e.target.value = ''; query = '';
+    $('#searchbar').hidden = true;
+  }
+});
 
 $$('#bottom-nav button').forEach(b => { b.onclick = () => go(b.dataset.view); });
 
@@ -881,6 +900,10 @@ document.addEventListener('keydown', (e) => {
   if (e.code === 'ArrowLeft') video.currentTime = Math.max(0, video.currentTime - 10);
   if (e.code === 'ArrowRight') video.currentTime += 10;
   if (e.code === 'Escape') closePlayer();
+});
+
+window.addEventListener('error', (e) => {
+  try { toast('Error: ' + (e.message || 'unknown')); } catch (_) {}
 });
 
 /* boot */
