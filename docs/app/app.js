@@ -5,7 +5,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const VIDEO_EXT = /\.(mp4|webm|mkv|mov|m4v|avi|ogv|3gp|ts|m3u8|mpd|flv)$/i;
 
 const DEFAULTS = {
-  theme: 'dark', gridView: false, sortBy: 'name', sortAsc: true,
+  theme: 'system', accent: 'green', gridView: false, sortBy: 'name', sortAsc: true,
   autoplay: true, resume: true, speed: 1, subtitleSize: 16
 };
 
@@ -322,6 +322,26 @@ function wireLongPress(el, v) {
   el.addEventListener('pointercancel', clear);
 }
 
+
+/* ---------------- appearance ---------------- */
+const mqLight = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
+
+function resolveTheme(t) {
+  if (t === 'system') return (mqLight && mqLight.matches) ? 'light' : 'dark';
+  return t === 'black' ? 'black' : (t === 'light' ? 'light' : 'dark');
+}
+
+function applyAppearance() {
+  document.body.dataset.theme = resolveTheme(settings.theme || 'system');
+  document.body.dataset.accent = settings.accent || 'green';
+}
+
+if (mqLight && mqLight.addEventListener) {
+  mqLight.addEventListener('change', () => {
+    if ((settings.theme || 'system') === 'system') applyAppearance();
+  });
+}
+
 /* ---------------- rendering ---------------- */
 function setTitle(t, back = false) {
   $('#screen-title').textContent = t;
@@ -329,7 +349,7 @@ function setTitle(t, back = false) {
 }
 
 function render() {
-  document.body.classList.toggle('oled', settings.theme === 'oled');
+  applyAppearance();
   $$('#bottom-nav button').forEach(b => b.classList.toggle('active', b.dataset.view === currentView));
   const c = $('#content');
   c.scrollTop = 0;
@@ -546,6 +566,29 @@ function emptyState(msg) {
   return d;
 }
 
+
+function pillsBlock(label, opts, current, onPick) {
+  const wrap = document.createElement('div');
+  wrap.className = 'setting';
+  wrap.style.display = 'block';
+  const l = document.createElement('div');
+  l.className = 't';
+  l.textContent = label;
+  l.style.marginBottom = '10px';
+  const row = document.createElement('div');
+  row.className = 'pills';
+  opts.forEach(([val, txt]) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (current === val ? ' on' : '');
+    b.textContent = txt;
+    b.onclick = () => onPick(val);
+    row.appendChild(b);
+  });
+  wrap.appendChild(l);
+  wrap.appendChild(row);
+  return wrap;
+}
+
 function renderSettings(c) {
   setTitle('Settings', false);
   c.innerHTML = '';
@@ -581,8 +624,31 @@ function renderSettings(c) {
     return row;
   };
 
-  c.appendChild(group('Appearance', [
-    selectRow('Theme', 'theme', [['dark', 'Dark'], ['oled', 'OLED black']]),
+  const appSection = document.createElement('section');
+  appSection.className = 'section';
+  appSection.innerHTML = '<div class="section-head"><h2>Appearance</h2></div>';
+  const appGroup = document.createElement('div');
+  appGroup.className = 'group';
+  appGroup.appendChild(pillsBlock(
+    'Theme',
+    [['system', 'System'], ['dark', 'Dark'], ['light', 'Light'], ['black', 'Black']],
+    settings.theme || 'system',
+    (v) => { settings.theme = v; save('settings', settings); applyAppearance(); render(); }
+  ));
+  appGroup.appendChild(pillsBlock(
+    'Accent colour',
+    [['green', 'Green'], ['saffron', 'Saffron'], ['indigo', 'Indigo']],
+    settings.accent || 'green',
+    (v) => { settings.accent = v; save('settings', settings); applyAppearance(); render(); }
+  ));
+  const note = document.createElement('div');
+  note.className = 'setting';
+  note.innerHTML = '<div class="txt"><div class="d">Saved in this browser only. Nothing about your choice leaves this device.</div></div>';
+  appGroup.appendChild(note);
+  appSection.appendChild(appGroup);
+  c.appendChild(appSection);
+
+  c.appendChild(group('Library', [
     toggleRow('Grid view', 'Library me grid ya list', 'gridView'),
     selectRow('Sort by', 'sortBy', [['name', 'Name'], ['date', 'Date'], ['size', 'Size'], ['duration', 'Duration']]),
     toggleRow('Ascending', 'Chhote se bada', 'sortAsc')
@@ -907,5 +973,6 @@ window.addEventListener('error', (e) => {
 });
 
 /* boot */
+applyAppearance();
 $('#p-speed').textContent = (Number(settings.speed) || 1).toFixed(1) + 'x';
 render();
