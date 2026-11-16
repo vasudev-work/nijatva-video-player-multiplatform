@@ -1,3 +1,13 @@
+# nijatva-video-player-multiplatform — superseded
+
+> **Use [nijatva-video-player](https://github.com/vasudev-work/nijatva-video-player) instead.**
+>
+> Both repos declare the same application id (`com.nijatva.videoplayer`), so they can never be
+> installed side by side, and only one of them can be published. `nijatva-video-player` is the
+> canonical app for the Nijatva family; this multiplatform experiment is kept for reference only.
+
+---
+
 # Nijatva Video Player — multiplatform
 
 One product, several platforms, built from a single Compose Multiplatform codebase.
